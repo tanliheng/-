@@ -87,7 +87,7 @@ print("Validation targets summary:")
 display.display(validation_targets.describe())
 
 #线性回归
-#
+#配置特征列
 def construct_feature_columns(input_features):
   """Construct the TensorFlow Feature Columns.
 
@@ -98,7 +98,7 @@ def construct_feature_columns(input_features):
   """
   return set([tf.feature_column.numeric_column(my_feature)
               for my_feature in input_features]
-
+#定义输入函数
 def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     """Trains a linear regression model.
   
@@ -127,6 +127,7 @@ def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     features, labels = ds.make_one_shot_iterator().get_next()
     return features, labels
     
+#配置模型
 def train_linear_regressor_model(
     learning_rate,
     steps,
@@ -169,7 +170,7 @@ def train_linear_regressor_model(
       optimizer=my_optimizer
   )
     
-  # Create input functions.  
+  # Create input functions.创建输入函数
   training_input_fn = lambda: my_input_fn(training_examples, 
                                           training_targets["median_house_value_is_high"], 
                                           batch_size=batch_size)
@@ -189,7 +190,7 @@ def train_linear_regressor_model(
   training_rmse = []
   validation_rmse = []
   for period in range (0, periods):
-    # Train the model, starting from the prior state.
+    # Train the model, starting from the prior state.训练模型
     linear_regressor.train(
         input_fn=training_input_fn,
         steps=steps_per_period
@@ -234,6 +235,7 @@ linear_regressor = train_linear_regressor_model(
     validation_examples=validation_examples,
     validation_targets=validation_targets)
 
+#计算预测的对数损失函数
 predict_validation_input_fn = lambda: my_input_fn(validation_examples, 
                                                   validation_targets["median_house_value_is_high"], 
                                                   num_epochs=1, 
@@ -244,6 +246,10 @@ validation_predictions = np.array([item['predictions'][0] for item in validation
 
 _ = plt.hist(validation_predictions)
 
+
+
+#逻辑回归，使用LinearClassifier
+#配置模型
 def train_linear_classifier_model(
     learning_rate,
     steps,
@@ -346,7 +352,8 @@ linear_classifier = train_linear_classifier_model(
     training_targets=training_targets,
     validation_examples=validation_examples,
     validation_targets=validation_targets)
-    
+
+#计算准确率并为验证集绘制ROC曲线
 evaluation_metrics = linear_classifier.evaluate(input_fn=predict_validation_input_fn)
 
 print("AUC on the validation set: %0.2f" % evaluation_metrics['auc'])
