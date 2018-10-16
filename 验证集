@@ -18,8 +18,8 @@ pd.options.display.float_format = '{:.1f}'.format
 
 california_housing_dataframe = pd.read_csv("https://download.mlcc.google.cn/mledu-datasets/california_housing_train.csv", sep=",")
 
-# california_housing_dataframe = california_housing_dataframe.reindex(
-#     np.random.permutation(california_housing_dataframe.index))
+california_housing_dataframe = california_housing_dataframe.reindex(
+np.random.permutation(california_housing_dataframe.index))
 
 #特征进行预处理，使用多个特征 
 def preprocess_features(california_housing_dataframe):
