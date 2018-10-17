@@ -128,7 +128,7 @@ def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     features, labels = ds.make_one_shot_iterator().get_next()
     return features, labels
     
-#配置模型 
+#定义模型函数 
 def train_model(
     learning_rate,
     steps,
@@ -163,7 +163,7 @@ def train_model(
   periods = 10
   steps_per_period = steps / periods
 
-  # Create a linear regressor object.
+  # Create a linear regressor object.配置模型
   my_optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
   my_optimizer = tf.contrib.estimator.clip_gradients_by_norm(my_optimizer, 5.0)
   linear_regressor = tf.estimator.LinearRegressor(
@@ -184,7 +184,7 @@ def train_model(
                                                     num_epochs=1, 
                                                     shuffle=False)
 
-  # Train the model, but do so inside a loop so that we can periodically assess
+  # Train the model, but do so inside a loop so that we can periodically assess训练模型
   # loss metrics.
   print("Training model...")
   print("RMSE (on training data):")
